@@ -7,11 +7,13 @@ import {
     deletePost
 } from "../controllers/post.controller.js";
 
+import { protect, restrictTo } from "../middleware/auth.js";
+
 const router = express.Router();
 
 router.get("/", getPosts);
-router.post("/", createPost);
-router.put("/:id", updatePost);
-router.delete("/:id", deletePost);
+router.post("/", protect, createPost);
+router.put("/:id", protect, restrictTo("admin"), updatePost);
+router.delete("/:id", protect, restrictTo("admin"), deletePost);
 
 export default router;
